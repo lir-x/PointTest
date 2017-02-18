@@ -115,9 +115,9 @@ class EditNodeViewController: UIViewController, UITextFieldDelegate {
                 let nsString = s as NSString
                 let newString = nsString.replacingCharacters(in: range, with: string) as NSString
                 do {
-                    //let pattern = "^([0-9]+)?(\\. ?([0-9]{1,2})?)?$"
+
                     let pattern = "^([0-9]{1,3}+)?(\\. ?([0-9]{1,2})?)?$"
-                   // let pattern = "^(([0-9]+(?:\.[0-9]+)?)|([0-9]*(?:\.[0-9]+)?))$"
+
                     let regExp = try NSRegularExpression(pattern: pattern as String, options: .caseInsensitive)
                     let numberOfMatches = regExp.numberOfMatches(in: newString as String, options: [], range: NSMakeRange(0, newString.length))
                     if numberOfMatches == 0 {
