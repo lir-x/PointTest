@@ -40,8 +40,8 @@ func angeleNearestNode(byNode node: Node, edge e: Edge) -> Float{
     let B = e.destanation
     let C = node
     
-    let a = distanceBetween(node1: B, node2: C)
-    let b = distanceBetween(node1: A, node2: B)
+    let a = abs(distanceBetween(node1: B, node2: C))
+    let b = abs(distanceBetween(node1: A, node2: C))
     let c = e.distance
     
     let aPow = powf(a, 2)
