@@ -210,12 +210,12 @@ class Path: NodeDelegate {
     }
     
     public func remove(node: Node) {
-        node.delegate = nil
         let edge1 = self.partsOfPath.filter({ $0.sourse == node})[0]
         let edge2 = self.partsOfPath.filter({ $0.destanation == node})[0]
         edge2.destanation = edge1.destanation
         partsOfPath.remove(object: edge1)
         self.delegate?.nodeHasBeenRemovedOnPath(path: self, node: node)
+        node.delegate = nil
     }
     
     public func add(nodes: [Node]) { for n in nodes { self.add(node: n) }}
