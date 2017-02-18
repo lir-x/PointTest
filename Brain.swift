@@ -97,19 +97,6 @@ protocol PathDelegate {
     func partOfPathHasBeenSplitted(path: Path, oldEdge: Edge, newEdges: [Edge], byNode: Node)
 }
 
-class RouteModel {
-    
-    var name: String
-    var distance: Float
-    
-    
-    
-    init(name: String, distance: Float) {
-        self.name = name
-        self.distance = distance
-    }
-}
-
 class Node: LXNode {
     
     var name: String {
