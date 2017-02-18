@@ -34,6 +34,27 @@ func distanceBetween(p1: CGPoint, p2: CGPoint) -> Float {
 func distanceBetween(node1: Node, node2: Node) -> Float {
     return distanceBetween(p1: node1.position, p2: node2.position)
 }
+func angeleNearestNode(byNode node: Node, edge e: Edge) -> Float{
+    
+    let A = e.sourse
+    let B = e.destanation
+    let C = node
+    
+    let a = distanceBetween(node1: B, node2: C)
+    let b = distanceBetween(node1: A, node2: B)
+    let c = e.distance
+    
+    let aPow = powf(a, 2)
+    let bPow = powf(b, 2)
+    let cPow = powf(c, 2)
+    
+    if a <= b {
+        return abs( cos(bPow + cPow - aPow)/(2 * (b * c)))
+    } else {
+        return abs (cos(aPow + cPow - bPow)/(2 * (a * c)))
+    }
+}
+
 func heightToEdge(nodeA: Node, edge: Edge) -> Float {
     let nodeB = edge.sourse
     let nodeC = edge.destanation
@@ -209,7 +230,28 @@ class Path: NodeDelegate {
     
     private func  nearestEdge(edges: [Edge], toNode: Node) -> Edge {
         
-        return edges.min(by: { distanceFromNode(node: toNode, toEdge: $0.0) < distanceFromNode(node: toNode, toEdge: $0.1)})!
+        let sortedEdge = edges.sorted(by: {distanceFromNode(node: toNode, toEdge: $0.0)<distanceFromNode(node: toNode, toEdge: $0.1)})
+        if sortedEdge.count < 2 {
+            return sortedEdge[0]
+        }
+        let edge0 = sortedEdge[0]
+        let edge1 = sortedEdge[1]
+        let edge0Distance = distanceFromNode(node: toNode, toEdge: edge0)
+        let edge1Distance = distanceFromNode(node: toNode, toEdge: edge1)
+        if  edge0Distance == edge1Distance {
+            let angle0 = angeleNearestNode(byNode: toNode, edge: edge0)
+            let angle1 = angeleNearestNode(byNode: toNode, edge: edge1)
+            print("A0: \(angle0) A1: \(angle1)")
+            if angle0 <= angle1 {
+                return edge0
+            } else {
+                return edge1
+            }
+        } else {
+            return edge0
+        }
+        
+       // return edges.min(by: { distanceFromNode(node: toNode, toEdge: $0.0) < distanceFromNode(node: toNode, toEdge: $0.1)})!
     }
     
     private func split(edge: Edge, byNode: Node) {
