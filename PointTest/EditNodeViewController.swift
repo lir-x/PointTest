@@ -29,6 +29,7 @@ class EditNodeViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveAction(sender:)) )
+        self.navigationItem.title = "Edit point"
         
         self.nameField.placeholder = Constants.namePlaceholder
         self.xPositionField.placeholder = Constants.xPositionPlaceholder

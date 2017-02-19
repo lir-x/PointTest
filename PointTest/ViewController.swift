@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = "Tap for add point"
+        
         let point1 = CGPoint(x: 0, y: 0)
         let point2 = CGPoint(x: self.view.bounds.maxX, y: self.view.bounds.maxY)
         

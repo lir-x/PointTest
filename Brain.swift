@@ -236,6 +236,10 @@ class Path: NodeDelegate {
         }
         let edge0 = sortedEdge[0]
         let edge1 = sortedEdge[1]
+        if distanceFromNode(node: toNode, toEdge: edge0) != distanceFromNode(node: toNode, toEdge: edge1) {
+            return edge0
+        }
+        print("distanse to edges equal!!!")
         // TODO: OPTIMIZE!!!!!!
         let d0 = edge0.distance +
             distanceBetween(node1: toNode, node2: self.min(node: toNode, edge: edge0)) +
@@ -245,25 +249,6 @@ class Path: NodeDelegate {
             distanceBetween(node1: toNode, node2: max(node: toNode, edge: edge0))
         
         return d0 >= d1 ? edge0 : edge1
-        
-        
-        /*
-        let edge0Distance = distanceFromNode(node: toNode, toEdge: edge0)
-        let edge1Distance = distanceFromNode(node: toNode, toEdge: edge1)
-        if  edge0Distance == edge1Distance {
-            let angle0 = angeleNearestNode(byNode: toNode, edge: edge0)
-            let angle1 = angeleNearestNode(byNode: toNode, edge: edge1)
-            print("A0: \(angle0) A1: \(angle1)")
-            if angle0 <= angle1 {
-                return edge0
-            } else {
-                return edge1
-            }
-        } else {
-            return edge0
-        }
- */
-       // return edges.min(by: { distanceFromNode(node: toNode, toEdge: $0.0) < distanceFromNode(node: toNode, toEdge: $0.1)})!
     }
     // TODO: OPTIMIZE!!!!!
     
