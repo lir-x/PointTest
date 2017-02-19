@@ -40,8 +40,8 @@ func angeleNearestNode(byNode node: Node, edge e: Edge) -> Float{
     let B = e.destanation
     let C = node
     
-    let a = abs(distanceBetween(node1: B, node2: C))
-    let b = abs(distanceBetween(node1: A, node2: C))
+    let a = distanceBetween(node1: B, node2: C)
+    let b = distanceBetween(node1: A, node2: C)
     let c = e.distance
     
     let aPow = powf(a, 2)
@@ -49,9 +49,9 @@ func angeleNearestNode(byNode node: Node, edge e: Edge) -> Float{
     let cPow = powf(c, 2)
     
     if a <= b {
-        return abs( cos(bPow + cPow - aPow)/(2 * (b * c)))
+        return  cos(bPow + cPow - aPow)/(2 * (b * c))
     } else {
-        return abs (cos(aPow + cPow - bPow)/(2 * (a * c)))
+        return cos(aPow + cPow - bPow)/(2 * (a * c))
     }
 }
 
@@ -236,6 +236,18 @@ class Path: NodeDelegate {
         }
         let edge0 = sortedEdge[0]
         let edge1 = sortedEdge[1]
+        // TODO: OPTIMIZE!!!!!!
+        let d0 = edge0.distance +
+            distanceBetween(node1: toNode, node2: self.min(node: toNode, edge: edge0)) +
+            distanceBetween(node1: toNode, node2: max(node: toNode, edge: edge1))
+        let d1 = edge1.distance +
+            distanceBetween(node1: toNode, node2: self.min(node: toNode, edge: edge1)) +
+            distanceBetween(node1: toNode, node2: max(node: toNode, edge: edge0))
+        
+        return d0 >= d1 ? edge0 : edge1
+        
+        
+        /*
         let edge0Distance = distanceFromNode(node: toNode, toEdge: edge0)
         let edge1Distance = distanceFromNode(node: toNode, toEdge: edge1)
         if  edge0Distance == edge1Distance {
@@ -250,8 +262,24 @@ class Path: NodeDelegate {
         } else {
             return edge0
         }
-        
+ */
        // return edges.min(by: { distanceFromNode(node: toNode, toEdge: $0.0) < distanceFromNode(node: toNode, toEdge: $0.1)})!
+    }
+    // TODO: OPTIMIZE!!!!!
+    
+    func min(node: Node, edge: Edge) -> Node {
+        var result = edge.sourse
+        if distanceBetween(node1: node, node2: edge.sourse) > distanceBetween(node1: node, node2: edge.destanation) {
+            result = edge.destanation
+        }
+        return result
+    }
+    func max(node: Node, edge: Edge) -> Node {
+        var result = edge.sourse
+        if distanceBetween(node1: node, node2: edge.sourse) < distanceBetween(node1: node, node2: edge.destanation) {
+            result = edge.destanation
+        }
+        return result
     }
     
     private func split(edge: Edge, byNode: Node) {
@@ -276,6 +304,8 @@ class Path: NodeDelegate {
     }
     
     func nodeDidMoved(node: Node, oldPosition: CGPoint, toPosition: CGPoint) {
+        self.remove(node: node)
+        self.add(node: node)
         self.delegate?.nodeHasBeenEditedOnPath(path: self, node: node)
     }
     
